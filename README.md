@@ -26,8 +26,8 @@ An interactive web-based calculator inspired by iPhone aesthetics. It supports b
 
 1. Navigate to the project directory:
 
-####cd to simple-calculator folder
-####Open index.html in your favourite web browser.
+- cd to simple-calculator folder
+- Open index.html in your favourite web browser.
 
 ### Live Application URL
 
