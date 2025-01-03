@@ -1,0 +1,236 @@
+<!-- version 1 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sara Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .calculator {
+            width: 320px;
+            background: #222;
+            border: 2px solid #888;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .display {
+            background: #000;
+            color: #fff;
+            font-size: 2.5rem;
+            text-align: right;
+            padding: 20px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #444;
+        }
+
+        .history {
+            background: #333;
+            color: #fff;
+            font-size: 1rem;
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 10px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #444;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: #444;
+        }
+
+        .button {
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            background: #333;
+            border: none;
+            outline: none;
+        }
+
+        .button.orange {
+            background: #f5913e;
+        }
+
+        .button.green {
+            background: #10904e;
+        }
+
+        .button.gray {
+            background: #a5a5a5;
+            color: #000;
+        }
+
+        .button.zero {
+            grid-column: span 2;
+        }
+
+        .button:active {
+            opacity: 0.7;
+        }
+
+        .clear-history {
+            grid-column: span 2;
+            background: #d9534f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="history" id="history"></div>
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="button gray" onclick="clearDisplay()">AC</button>
+            <button class="button gray" onclick="toggleSign()">±</button>
+            <button class="button gray" onclick="percentage()">%</button>
+            <button class="button" onclick="deleteLast()">←</button>
+
+            
+            
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button orange" onclick="setOperation('x')">x</button>
+            
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button orange" onclick="setOperation('-')">−</button>
+            
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button orange" onclick="setOperation('+')">+</button>
+            
+            <button class="button zero" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendNumber('.')">.</button>
+            <button class="button orange" onclick="setOperation('/')">÷</button>
+            
+            <button class="button green" onclick="calculate()">=</button>
+            <button class="button clear-history" onclick="clearHistory()">Clear History</button>
+            <button class="button green" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let currentOperand = '';
+        let previousOperand = '';
+        let operation = null;
+        const historyElement = document.getElementById('history');
+
+        function formatNumber(number) {
+            const [integer, decimal] = number.split('.');
+            const formattedInteger = parseInt(integer, 10).toLocaleString('en');
+            return decimal ? `${formattedInteger}.${decimal}` : formattedInteger;
+        }
+
+        function updateDisplay() {
+            const display = document.getElementById('display');
+            if (operation && !currentOperand) {
+                display.textContent = `${formatNumber(previousOperand)} ${operation}`;
+            } else {
+                display.textContent = formatNumber(currentOperand || '0');
+            }
+        }
+
+        function addToHistory(entry) {
+            const historyItem = document.createElement('div');
+            historyItem.textContent = entry;
+            historyElement.prepend(historyItem);
+        }
+
+        function clearDisplay() {
+            currentOperand = '';
+            previousOperand = '';
+            operation = null;
+            updateDisplay();
+        }
+
+        function appendNumber(number) {
+            if (number === '.' && currentOperand.includes('.')) return;
+            currentOperand += number;
+            updateDisplay();
+        }
+
+        function setOperation(op) {
+            if (currentOperand === '') return;
+            if (previousOperand !== '') calculate();
+            operation = op;
+            previousOperand = currentOperand;
+            currentOperand = '';
+            updateDisplay();
+        }
+
+        function calculate() {
+            let result;
+            const prev = parseFloat(previousOperand);
+            const current = parseFloat(currentOperand);
+
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operation) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case 'x':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = current === 0 ? 'Error' : prev / current;
+                    break;
+                default:
+                    return;
+            }
+
+            addToHistory(`${formatNumber(previousOperand)} ${operation} ${formatNumber(currentOperand)} = ${formatNumber(result.toString())}`);
+            currentOperand = result.toString();
+            operation = null;
+            previousOperand = '';
+            updateDisplay();
+        }
+
+        function toggleSign() {
+            if (currentOperand === '') return;
+            currentOperand = (parseFloat(currentOperand) * -1).toString();
+            updateDisplay();
+        }
+
+        function percentage() {
+            if (currentOperand === '') return;
+            currentOperand = (parseFloat(currentOperand) / 100).toString();
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            currentOperand = currentOperand.slice(0, -1);
+            updateDisplay();
+        }
+
+        function clearHistory() {
+            historyElement.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
