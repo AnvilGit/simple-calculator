@@ -41,7 +41,7 @@ The Application is deployed in https://anvilgit.github.io/simple-calculator/
 
 
 ### File Structure
-####This is a small program, so there is only one index.html file with all css inside <style> tag  and javascript implementation inside <script> for code readibility.
+This is a small program, so there is only one index.html file with all css inside <style> tag  and javascript implementation inside <script> for code readibility.
 
 
 ### Contributing
