@@ -100,6 +100,35 @@
             background: #d9534f;
             color: white;
         }
+/* For iPhone Xs Max */
+        @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+    body {
+        background-color: #222; /* Example change */
+    }
+
+    .calculator {
+        width: 100%; /* Make the calculator full width */
+        max-width: 380px; /* Add a maximum width for readability */
+        margin: 10px; /* Add some padding */
+        border-radius: 15px;
+    }
+
+    .display {
+        font-size: 2rem; /* Adjust font size for better scaling */
+        padding: 15px;
+    }
+
+    .buttons {
+        grid-template-columns: repeat(4, 1fr); /* Adjust button layout */
+        gap: 5px;
+    }
+
+    .button {
+        height: 60px; /* Adjust button height */
+        font-size: 1.3rem;
+    }
+}
+
     </style>
 </head>
 <body>
