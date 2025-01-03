@@ -5,8 +5,6 @@ An interactive web-based calculator inspired by iPhone aesthetics. It supports b
 
 ## Features
 
-## Features
-
 - **Responsive Design**: Adapts to various screen sizes.
 - **History Panel**: Displays a history of your recent calculations.
 - **Error Handling**: Prevents invalid operations like division by zero.
@@ -28,8 +26,8 @@ An interactive web-based calculator inspired by iPhone aesthetics. It supports b
 
 1. Navigate to the project directory:
 
-cd simple-calculator folder
-Open index.html in your favourite web browser.
+####cd to simple-calculator folder
+####Open index.html in your favourite web browser.
 
 ### Live Application URL
 
@@ -37,12 +35,13 @@ The Application is deployed in https://anvilgit.github.io/simple-calculator/
 
 ### Usage
 - Enter numbers and select operations using the interactive buttons.
-- Use the AC button to reset the display and the Clear History button to delete the calculation history.
-- Perform arithmetic operations like addition, subtraction, multiplication, and division.
+- Use the AC button to reset the display
+- keeps log of Calcultion history and the Clear History button will delete the calculation history.
+- Perform basic arithmetic operations like addition, subtraction, multiplication, and division.
 
 
 ### File Structure
-####◇ This is a small program, so there is only one index.html file with <style> for css and <script> for javascript implementation for code readibility.
+####This is a small program, so there is only one index.html file with all css inside <style> tag  and javascript implementation inside <script> for code readibility.
 
 
 ### Contributing
