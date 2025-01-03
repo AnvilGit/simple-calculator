@@ -155,19 +155,48 @@
         }
 
         function updateDisplay() {
-            const display = document.getElementById('display');
-            // Update the main display
-            display.textContent = formatNumber(currentOperand || '0');
-            
-            // Update the expression display
-            if (previousOperand && operation) {
-                expressionElement.textContent = `${formatNumber(previousOperand)} ${operation} ${currentOperand || ''}`;
-            } else if (currentOperand) {
-                expressionElement.textContent = formatNumber(currentOperand);
-            } else {
-                expressionElement.textContent = '';
-            }
+    const display = document.getElementById('display');
+    
+    if (previousOperand && operation && currentOperand) {
+        // If we have all components, show the result of the calculation
+        const prev = parseFloat(previousOperand);
+        const current = parseFloat(currentOperand);
+        let result;
+        
+        switch (operation) {
+            case '+':
+                result = prev + current;
+                break;
+            case '-':
+                result = prev - current;
+                break;
+            case 'x':
+                result = prev * current;
+                break;
+            case '/':
+                result = current === 0 ? 'Error' : prev / current;
+                break;
+            default:
+                result = 0;
         }
+        
+        // Show the full expression in the expression display
+        expressionElement.textContent = `${formatNumber(previousOperand)} ${operation} ${formatNumber(currentOperand)}`;
+        // Show the result in the main display
+        display.textContent = formatNumber(result.toString());
+    } else {
+        // If we don't have all components, show the current operand
+        display.textContent = formatNumber(currentOperand || '0');
+        
+        if (previousOperand && operation) {
+            expressionElement.textContent = `${formatNumber(previousOperand)} ${operation} ${currentOperand || ''}`;
+        } else if (currentOperand) {
+            expressionElement.textContent = formatNumber(currentOperand);
+        } else {
+            expressionElement.textContent = '';
+        }
+    }
+}
 
         function addToHistory(entry) {
             const historyItem = document.createElement('div');
