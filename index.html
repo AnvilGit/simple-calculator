@@ -1,4 +1,3 @@
-<!-- version 1 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sara Calculator</title>
     <style>
+        /* Previous CSS styles remain unchanged */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -35,6 +35,14 @@
             border-bottom: 1px solid #444;
         }
 
+        .current-expression {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 5px;
+            min-height: 1.2rem;
+        }
+
+        /* Rest of the previous CSS styles */
         .history {
             background: #333;
             color: #fff;
@@ -97,14 +105,16 @@
 <body>
     <div class="calculator">
         <div class="history" id="history"></div>
-        <div class="display" id="display">0</div>
+        <div class="display">
+            <div class="current-expression" id="expression"></div>
+            <div id="display">0</div>
+        </div>
         <div class="buttons">
+            <!-- Previous buttons remain unchanged -->
             <button class="button gray" onclick="clearDisplay()">AC</button>
             <button class="button gray" onclick="toggleSign()">±</button>
             <button class="button gray" onclick="percentage()">%</button>
             <button class="button" onclick="deleteLast()">←</button>
-
-            
             
             <button class="button" onclick="appendNumber('7')">7</button>
             <button class="button" onclick="appendNumber('8')">8</button>
@@ -136,6 +146,7 @@
         let previousOperand = '';
         let operation = null;
         const historyElement = document.getElementById('history');
+        const expressionElement = document.getElementById('expression');
 
         function formatNumber(number) {
             const [integer, decimal] = number.split('.');
@@ -145,10 +156,16 @@
 
         function updateDisplay() {
             const display = document.getElementById('display');
-            if (operation && !currentOperand) {
-                display.textContent = `${formatNumber(previousOperand)} ${operation}`;
+            // Update the main display
+            display.textContent = formatNumber(currentOperand || '0');
+            
+            // Update the expression display
+            if (previousOperand && operation) {
+                expressionElement.textContent = `${formatNumber(previousOperand)} ${operation} ${currentOperand || ''}`;
+            } else if (currentOperand) {
+                expressionElement.textContent = formatNumber(currentOperand);
             } else {
-                display.textContent = formatNumber(currentOperand || '0');
+                expressionElement.textContent = '';
             }
         }
 
@@ -181,6 +198,8 @@
         }
 
         function calculate() {
+            if (!operation || !previousOperand || !currentOperand) return;
+            
             let result;
             const prev = parseFloat(previousOperand);
             const current = parseFloat(currentOperand);
@@ -208,6 +227,7 @@
             currentOperand = result.toString();
             operation = null;
             previousOperand = '';
+            expressionElement.textContent = '';
             updateDisplay();
         }
 
